@@ -15,10 +15,36 @@ pnpm-debug.log*
 
 # environment variables
 .env
-.env.production
+.env.*
+!.env.example
 
-# macOS-specific files
+# cloudflare / wrangler
+.wrangler/
+.mf/
+
+# local database artifacts
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+*.db
+*.db-journal
+*.db-wal
+
+# OS files
 .DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
 
-# jetbrains setting folder
+# editor temporary files
 .idea/
+*.swp
+*.swo
+*~
+
+# agent skills & assistant directories
+.agents/
+.claude/
+skills-lock.json

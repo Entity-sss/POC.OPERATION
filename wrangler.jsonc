@@ -1,0 +1,24 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"compatibility_date": "2026-09-10",
+	"compatibility_flags": [
+		"global_fetch_strictly_public"
+	],
+	"name": "poc-operation",
+	"main": "@astrojs/cloudflare/entrypoints/server",
+	"assets": {
+		"directory": "./dist",
+		"binding": "ASSETS"
+	},
+	"observability": {
+		"enabled": true
+	},
+	"d1_databases": [
+		{
+			"binding": "poc_operation_db",
+			"database_name": "poc-operation-db",
+			"database_id": "9e9c66d3-b4c3-4568-bb53-bf53cb4c635b",
+			"remote": true
+		}
+	]
+}
