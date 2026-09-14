@@ -26,6 +26,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
       case 'FileCheck': return <Icons.FileCheck className="w-5 h-5 flex-shrink-0" />;
       case 'Settings': return <Icons.Settings className="w-5 h-5 flex-shrink-0" />;
       case 'Shield': return <Icons.Shield className="w-5 h-5 flex-shrink-0" />;
+      case 'Target': return <Icons.Target className="w-5 h-5 flex-shrink-0" />;
+      case 'TrendingUp': return <Icons.TrendingUp className="w-5 h-5 flex-shrink-0" />;
+      case 'CheckSquare': return <Icons.CheckSquare className="w-5 h-5 flex-shrink-0" />;
+      case 'Building': return <Icons.Building className="w-5 h-5 flex-shrink-0" />;
+      case 'FolderKanban': return <Icons.FolderKanban className="w-5 h-5 flex-shrink-0" />;
+      case 'Truck': return <Icons.Truck className="w-5 h-5 flex-shrink-0" />;
+      case 'IndianRupee': return <Icons.IndianRupee className="w-5 h-5 flex-shrink-0" />;
+      case 'Ticket': return <Icons.Ticket className="w-5 h-5 flex-shrink-0" />;
+      case 'AlertTriangle': return <Icons.AlertTriangle className="w-5 h-5 flex-shrink-0" />;
       default: return <Icons.LayoutDashboard className="w-5 h-5 flex-shrink-0" />;
     }
   };
