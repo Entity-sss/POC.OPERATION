@@ -1,0 +1,8 @@
+# Cloudflare Wrangler local environment secrets template
+# NEVER commit real tokens, keys, passwords, or secrets to Git.
+# Copy this file to .dev.vars for local operations and fill in values.
+# .dev.vars is strictly excluded by .gitignore.
+
+# Ephemeral secret for initial first-Admin provisioning
+# Generate with: openssl rand -hex 32
+FIRST_ADMIN_PROVISION_TOKEN=

@@ -1,0 +1,44 @@
+---
+import Layout from './Layout.astro';
+import { AppShell } from '../components/shell/AppShell';
+import { env } from 'cloudflare:workers';
+import { createDb } from '@/lib/db';
+import { getPermissions, getPrincipal } from '@/lib/auth/service';
+
+export const prerender = false;
+
+// Authenticated session check
+const auth = Astro.locals.auth;
+if (!auth || !auth.isAuthenticated) {
+  return Astro.redirect('/');
+}
+
+const db = createDb(env.poc_operation_db);
+let principal: any = null;
+let permissions: string[] = [];
+
+try {
+  principal = await getPrincipal(db, auth);
+  const permSet = await getPermissions(db, principal.id);
+  permissions = Array.from(permSet);
+} catch (err) {
+  // If principal lookup fails, session might be invalid or expired
+  return Astro.redirect('/?reason=session-expired');
+}
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Operations Console | POC.OPERATION',
+  description = 'Pinnacle Operations Center unified workforce, governance, and asset platform.'
+} = Astro.props;
+---
+
+<Layout title={title} description={description}>
+  <AppShell client:load user={principal} permissions={permissions}>
+    <slot />
+  </AppShell>
+</Layout>

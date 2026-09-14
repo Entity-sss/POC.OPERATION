@@ -1,11 +1,17 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import AuthLayout from '../layouts/AuthLayout.astro';
+import { LoginPage } from '../components/auth/LoginPage';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+export const prerender = false;
+
+// If user is already authenticated, redirect to /dashboard
+if (Astro.locals.auth?.isAuthenticated) {
+  return Astro.redirect('/dashboard');
+}
+
+const reason = Astro.url.searchParams.get('reason');
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<AuthLayout title="Sign In | POC.OPERATION" description="Enterprise Authentication Gateway for Pinnacle Operations Center">
+  <LoginPage client:load initialReason={reason} />
+</AuthLayout>

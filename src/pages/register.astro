@@ -1,0 +1,15 @@
+---
+import AuthLayout from '../layouts/AuthLayout.astro';
+import { RegisterPage as RegisterComponent } from '../components/auth/RegisterPage';
+
+export const prerender = false;
+
+// If user is already authenticated, redirect to /dashboard
+if (Astro.locals.auth?.isAuthenticated) {
+  return Astro.redirect('/dashboard');
+}
+---
+
+<AuthLayout title="Apply for Employee Account | POC.OPERATION" description="Submit employee onboarding registration for review by Pinnacle administrators.">
+  <RegisterComponent client:load />
+</AuthLayout>

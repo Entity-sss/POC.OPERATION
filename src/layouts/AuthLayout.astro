@@ -1,0 +1,61 @@
+---
+import Layout from './Layout.astro';
+import { PinnacleLogo } from '../components/ui/PinnacleLogo';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Sign In | POC.OPERATION',
+  description = 'Sign in to Pinnacle Operations Center with your enterprise credentials.',
+} = Astro.props;
+---
+
+<Layout title={title} description={description}>
+  <div class="relative min-h-screen w-full flex flex-col justify-between overflow-x-hidden">
+    <!-- Cinematic Dark Mountain Landscape Background -->
+    <div 
+      class="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000"
+      style="background-image: url('/pinnacle-bg.jpg');"
+    >
+      <!-- Multi-layer Gradient Atmosphere Overlays -->
+      <!-- Deep Navy base blend -->
+      <div class="absolute inset-0 bg-[#0B1120]/75 mix-blend-multiply"></div>
+      <!-- Vignette and side contrast shadow -->
+      <div class="absolute inset-0 bg-gradient-to-t from-[#0B1120] via-transparent to-[#0B1120]/80"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-[#0B1120]/90 via-[#0B1120]/40 to-[#0B1120]/95"></div>
+      <!-- Subtle ambient warm gold horizon line glow -->
+      <div class="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-brand-primary/[0.04] to-transparent pointer-events-none"></div>
+    </div>
+
+    <!-- Header branding -->
+    <header class="relative z-10 w-full px-6 py-6 sm:px-12 flex items-center justify-between">
+      <a href="/" class="focus:outline-none focus:ring-2 focus:ring-brand-primary/60 rounded-lg p-1 transition-all">
+        <PinnacleLogo client:load size="md" />
+      </a>
+      <div class="hidden sm:flex items-center gap-3 text-xs text-text-tertiary">
+        <span class="w-2 h-2 rounded-full bg-status-success animate-pulse"></span>
+        <span class="font-mono tracking-wider">SYSTEM OPERATIONAL</span>
+      </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="relative z-10 flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8">
+      <slot />
+    </main>
+
+    <!-- Footer enterprise legal & status info -->
+    <footer class="relative z-10 w-full px-6 py-4 sm:px-12 flex flex-col sm:flex-row items-center justify-between text-xs text-text-tertiary gap-2 border-t border-border-subtle/50 bg-[#0B1120]/40 backdrop-blur-sm">
+      <p>© {new Date().getFullYear()} Pinnacle Operations. All rights reserved. Confidential & Proprietary.</p>
+      <div class="flex items-center gap-4">
+        <a href="#security" class="hover:text-text-secondary transition-colors">Security Policy</a>
+        <span>•</span>
+        <a href="#compliance" class="hover:text-text-secondary transition-colors">SOC2 Compliant</a>
+        <span>•</span>
+        <span class="font-mono text-brand-primary/80">v1.0.0-PROD</span>
+      </div>
+    </footer>
+  </div>
+</Layout>

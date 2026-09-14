@@ -1,0 +1,107 @@
+---
+import AppLayout from '../layouts/AppLayout.astro';
+import { Icons } from '../components/ui/Icons';
+
+export const prerender = false;
+---
+
+<AppLayout title="Dashboard | POC.OPERATION">
+  <div class="space-y-6">
+    {/* Page Header */}
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-border-subtle pb-5">
+      <div>
+        <h1 class="text-2xl font-bold tracking-tight text-text-primary">
+          Operations Overview
+        </h1>
+        <p class="text-xs text-text-secondary mt-1">
+          Real-time enterprise metrics, active personnel distribution, and infrastructure status.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-status-success-bg border border-status-success/30 text-status-success text-xs font-mono font-medium">
+          <span class="w-1.5 h-1.5 rounded-full bg-status-success animate-ping"></span>
+          ACTIVE NODE: D1_PRIMARY
+        </span>
+      </div>
+    </div>
+
+    {/* Metric Cards Grid */}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="glass-panel p-5 rounded-xl border border-white/5 space-y-3">
+        <div class="flex items-center justify-between text-text-tertiary">
+          <span class="text-xs font-semibold uppercase tracking-wider">Active Staff</span>
+          <div class="p-2 rounded-lg bg-surface-card border border-border-subtle text-brand-primary">
+            <Icons.Users className="w-4 h-4" />
+          </div>
+        </div>
+        <div>
+          <div class="text-2xl font-bold text-text-primary">1,248</div>
+          <div class="text-[11px] text-status-success flex items-center gap-1 mt-1">
+            <span>↑ 4.2%</span>
+            <span class="text-text-tertiary">vs previous month</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-panel p-5 rounded-xl border border-white/5 space-y-3">
+        <div class="flex items-center justify-between text-text-tertiary">
+          <span class="text-xs font-semibold uppercase tracking-wider">Managed Assets</span>
+          <div class="p-2 rounded-lg bg-surface-card border border-border-subtle text-brand-primary">
+            <Icons.Box className="w-4 h-4" />
+          </div>
+        </div>
+        <div>
+          <div class="text-2xl font-bold text-text-primary">3,892</div>
+          <div class="text-[11px] text-text-tertiary flex items-center gap-1 mt-1">
+            <span class="text-status-success">99.8%</span>
+            <span>telemetry uptime</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-panel p-5 rounded-xl border border-white/5 space-y-3">
+        <div class="flex items-center justify-between text-text-tertiary">
+          <span class="text-xs font-semibold uppercase tracking-wider">Pending Registrations</span>
+          <div class="p-2 rounded-lg bg-surface-card border border-border-subtle text-brand-primary">
+            <Icons.FileCheck className="w-4 h-4" />
+          </div>
+        </div>
+        <div>
+          <div class="text-2xl font-bold text-text-primary">14</div>
+          <div class="text-[11px] text-status-warning flex items-center gap-1 mt-1">
+            <span>Requires review</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-panel p-5 rounded-xl border border-white/5 space-y-3">
+        <div class="flex items-center justify-between text-text-tertiary">
+          <span class="text-xs font-semibold uppercase tracking-wider">Security Posture</span>
+          <div class="p-2 rounded-lg bg-surface-card border border-border-subtle text-brand-primary">
+            <Icons.Shield className="w-4 h-4" />
+          </div>
+        </div>
+        <div>
+          <div class="text-2xl font-bold text-status-success">COMPLIANT</div>
+          <div class="text-[11px] text-text-tertiary flex items-center gap-1 mt-1">
+            <span>Zero open CVE vulnerabilities</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Section Modules Preview Placeholder */}
+    <div class="glass-panel p-8 rounded-2xl border border-white/10 text-center space-y-4">
+      <div class="w-12 h-12 rounded-xl bg-brand-primary/10 border border-brand-primary/30 flex items-center justify-center mx-auto text-brand-primary">
+        <Icons.LayoutDashboard className="w-6 h-6" />
+      </div>
+      <div class="space-y-1.5 max-w-lg mx-auto">
+        <h2 class="text-lg font-bold text-text-primary">Phase 3 Navigation Architecture Established</h2>
+        <p class="text-xs text-text-secondary leading-relaxed">
+          The global shell, dark navy theme tokens, typography, and permission-driven navigation are active. Subsequent operational modules (Employee, Assets, Governance, Approvals) will mount within this layout shell seamlessly.
+        </p>
+      </div>
+    </div>
+  </div>
+</AppLayout>

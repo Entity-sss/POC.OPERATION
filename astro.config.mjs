@@ -7,7 +7,10 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   output: 'server',
-  adapter: cloudflare(),
+  // Authentication sessions are persisted in D1; do not provision Astro's default KV session store.
+  session: false,
+  // The application does not currently require Cloudflare Images.
+  adapter: cloudflare({ imageService: 'passthrough' }),
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()],
