@@ -12,10 +12,20 @@ export const GET: APIRoute = async (context) => {
     const db = createDb(env.poc_operation_db);
     await requirePermission(db, context.locals.auth, 'employee.approve_registration');
     const requests = await db.select({
-      id: employeeRegistrationRequests.id, fullName: employeeRegistrationRequests.fullName,
-      mobile: employeeRegistrationRequests.mobile, email: employeeRegistrationRequests.email,
-      status: employeeRegistrationRequests.status, createdAt: employeeRegistrationRequests.createdAt,
-      reviewedAt: employeeRegistrationRequests.reviewedAt, rejectionReason: employeeRegistrationRequests.rejectionReason,
+      id: employeeRegistrationRequests.id,
+      fullName: employeeRegistrationRequests.fullName,
+      mobile: employeeRegistrationRequests.mobile,
+      email: employeeRegistrationRequests.email,
+      dateOfBirth: employeeRegistrationRequests.dateOfBirth,
+      currentAddress: employeeRegistrationRequests.currentAddress,
+      permanentAddress: employeeRegistrationRequests.permanentAddress,
+      education: employeeRegistrationRequests.education,
+      priorExperience: employeeRegistrationRequests.priorExperience,
+      status: employeeRegistrationRequests.status,
+      createdEmployeeId: employeeRegistrationRequests.createdEmployeeId,
+      createdAt: employeeRegistrationRequests.createdAt,
+      reviewedAt: employeeRegistrationRequests.reviewedAt,
+      rejectionReason: employeeRegistrationRequests.rejectionReason,
     }).from(employeeRegistrationRequests).orderBy(desc(employeeRegistrationRequests.createdAt));
     return jsonResponse({ requests });
   } catch (error) { return apiError(error); }

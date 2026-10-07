@@ -57,7 +57,7 @@ export const SlaBadge: React.FC<SlaBadgeProps> = ({
       {label && (
         <>
           <span className="opacity-40">•</span>
-          <span className="text-[11px] opacity-90">{label}</span>
+          <span className="text-xs opacity-90">{label}</span>
         </>
       )}
     </span>

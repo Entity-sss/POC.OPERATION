@@ -3,17 +3,22 @@ import { Icons } from './Icons';
 
 interface AlertProps {
   type?: 'error' | 'warning' | 'success' | 'info';
+  variant?: 'error' | 'warning' | 'success' | 'info';
   title?: string;
-  message: string;
+  message?: string;
+  children?: React.ReactNode;
   className?: string;
 }
 
 export const Alert: React.FC<AlertProps> = ({
   type = 'info',
+  variant,
   title,
   message,
+  children,
   className = '',
 }) => {
+  const effectiveType = variant || type;
   const styles = {
     error: {
       bg: 'bg-status-error-bg',
@@ -41,7 +46,7 @@ export const Alert: React.FC<AlertProps> = ({
     },
   };
 
-  const current = styles[type];
+  const current = styles[effectiveType] || styles.info;
 
   return (
     <div
@@ -51,7 +56,7 @@ export const Alert: React.FC<AlertProps> = ({
       {current.icon}
       <div className="flex flex-col gap-0.5 leading-tight">
         {title && <span className="font-semibold text-text-primary text-xs tracking-wide uppercase">{title}</span>}
-        <span className="text-text-secondary">{message}</span>
+        {children ? <div className="text-text-secondary">{children}</div> : <span className="text-text-secondary">{message}</span>}
       </div>
     </div>
   );

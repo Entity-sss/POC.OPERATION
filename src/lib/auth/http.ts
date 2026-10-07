@@ -1,4 +1,5 @@
 import type { APIContext } from 'astro';
+import { ZodError } from 'zod';
 import { errorResponse, jsonResponse } from '@/lib/utils';
 import { AuthError } from './service';
 
@@ -13,6 +14,11 @@ export function clearSessionCookie(context: APIContext): void {
 }
 
 export function apiError(error: unknown): Response {
+  if (error instanceof ZodError) {
+    const firstIssue = error.issues[0];
+    const message = firstIssue ? `${firstIssue.path.join('.') || 'input'}: ${firstIssue.message}` : 'Validation error';
+    return errorResponse(message, 400, 'VALIDATION_ERROR', error.issues);
+  }
   if (error instanceof AuthError) return errorResponse(error.message, error.status, error.code);
   if (error instanceof SyntaxError) return errorResponse('Request body must be valid JSON', 400, 'INVALID_JSON');
   console.error('Unhandled API error', error instanceof Error ? error.message : 'unknown error');

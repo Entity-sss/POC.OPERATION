@@ -14,16 +14,20 @@ if (!auth || !auth.isAuthenticated) {
 }
 
 const db = createDb(env.poc_operation_db);
-let principal: any = null;
-let permissions: string[] = [];
+let principal: any = Astro.locals.principal ?? null;
+let permissions: string[] = Astro.locals.permissions ?? [];
 
-try {
-  principal = await getPrincipal(db, auth);
-  const permSet = await getPermissions(db, principal.id);
-  permissions = Array.from(permSet);
-} catch (err) {
-  // If principal lookup fails, session might be invalid or expired
-  return Astro.redirect('/?reason=session-expired');
+if (!principal) {
+  try {
+    principal = await getPrincipal(db, auth);
+    const permSet = await getPermissions(db, principal.id);
+    permissions = Array.from(permSet);
+    Astro.locals.principal = principal;
+    Astro.locals.permissions = permissions;
+  } catch (err) {
+    // If principal lookup fails, session might be invalid or expired
+    return Astro.redirect('/?reason=session-expired');
+  }
 }
 
 interface Props {

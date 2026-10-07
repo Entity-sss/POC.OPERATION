@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import worker from './first-admin-worker';
 import { AuthError, provisionFirstAdmin } from '@/lib/auth/service';
 import { hashPassword, verifyPassword } from '@/lib/auth/password';
-import { registrationSchema } from '@/lib/auth/validation';
+import { registrationSchema, firstAdminSchema } from '@/lib/auth/validation';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { execSync } from 'node:child_process';
@@ -156,12 +156,30 @@ describe('First-Admin Provisioning Security & Secret Handling', () => {
       password: 'AdminSuperSecretPassword99!',
     };
 
-    const parsed = registrationSchema.parse(validData);
+    const applicantData = {
+      fullName: validData.fullName,
+      mobile: validData.mobile,
+      email: validData.email,
+      currentAddress: validData.currentAddress,
+      permanentAddress: validData.permanentAddress,
+      education: validData.education,
+      priorExperience: validData.priorExperience,
+      password: validData.password,
+    };
+    const applicantParsed = registrationSchema.parse(applicantData);
+    assert.equal(applicantParsed.email, 'admin@pinnacle.com');
+
+    const parsed = firstAdminSchema.parse(validData);
     assert.equal(parsed.email, 'admin@pinnacle.com', 'Email should be normalized to lowercase');
 
-    // Short password (< 10 chars) must be rejected
+    // Missing required password must be rejected.
     assert.throws(() => {
-      registrationSchema.parse({ ...validData, password: 'short' });
+      registrationSchema.parse({ ...applicantData, password: undefined });
+    });
+
+    // Short password (< 6 chars) must be rejected.
+    assert.throws(() => {
+      firstAdminSchema.parse({ ...validData, password: 'short' });
     });
   });
 });

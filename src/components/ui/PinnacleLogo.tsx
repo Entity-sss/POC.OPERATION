@@ -47,12 +47,12 @@ export const PinnacleLogo: React.FC<PinnacleLogoProps> = ({
           <span className={`font-sans tracking-wide text-text-primary ${titleSizes[size]}`}>
             PINNACLE
           </span>
-          <span className="text-[10px] px-1.5 py-0.5 rounded bg-brand-primary/10 border border-brand-primary/30 text-brand-primary font-mono font-medium uppercase tracking-wider">
+          <span className="text-xs px-1.5 py-0.5 rounded bg-brand-primary/10 border border-brand-primary/30 text-brand-primary font-mono font-medium uppercase tracking-wider">
             Ops
           </span>
         </div>
         {showSubtitle && (
-          <span className="text-[10px] tracking-widest text-text-tertiary uppercase font-mono">
+          <span className="text-xs tracking-wider text-text-tertiary uppercase font-mono font-medium">
             POC.OPERATION
           </span>
         )}

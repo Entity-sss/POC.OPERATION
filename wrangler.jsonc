@@ -18,7 +18,6 @@
 			"binding": "poc_operation_db",
 			"database_name": "poc-operation-db",
 			"database_id": "9e9c66d3-b4c3-4568-bb53-bf53cb4c635b",
-			"remote": true,
 			"migrations_dir": "drizzle"
 		}
 	]

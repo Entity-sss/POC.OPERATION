@@ -17,7 +17,11 @@ export interface NavItem {
     | 'Truck'
     | 'IndianRupee'
     | 'Ticket'
-    | 'AlertTriangle';
+    | 'AlertTriangle'
+    | 'Lock'
+    | 'BarChart2'
+    | 'Briefcase'
+    | 'ChevronRight';
   requiredPermission?: string;
   badge?: string;
 }
@@ -27,6 +31,10 @@ export interface NavSection {
   items: NavItem[];
 }
 
+/**
+ * Full navigation definition.
+ * Each item maps to exactly ONE hash which maps to exactly ONE workspace state in DashboardShell.
+ */
 export const MAIN_NAVIGATION: NavSection[] = [
   {
     title: 'Executive',
@@ -142,7 +150,7 @@ export const MAIN_NAVIGATION: NavSection[] = [
         label: 'Workforce Directory',
         href: '/dashboard#employees',
         iconName: 'Users',
-        requiredPermission: 'employee.read',
+        requiredPermission: 'employee.read.company',
       },
       {
         id: 'registrations',
@@ -163,6 +171,7 @@ export const MAIN_NAVIGATION: NavSection[] = [
         label: 'System Settings',
         href: '/dashboard#settings',
         iconName: 'Settings',
+        requiredPermission: 'permission.manage',
       },
     ],
   },
@@ -170,11 +179,12 @@ export const MAIN_NAVIGATION: NavSection[] = [
 
 /**
  * Filter navigation items based on user's granted permissions array.
- * If user has wildcard '*' permission or role 'ADMIN' / 'CEO', all items are accessible.
+ * Respects granular permissions; wildcard '*' or 'admin' grants broad access.
+ * 'company.view' provides executive business visibility only and does NOT grant administrative or operational access.
  */
 export function getFilteredNavigation(permissions: string[] = []): NavSection[] {
   const permSet = new Set(permissions);
-  const isSuperUser = permSet.has('*') || permSet.has('admin') || permSet.has('company.view');
+  const isSuperUser = permSet.has('*') || permSet.has('admin');
 
   return MAIN_NAVIGATION.map((section) => {
     const visibleItems = section.items.filter((item) => {
@@ -184,4 +194,16 @@ export function getFilteredNavigation(permissions: string[] = []): NavSection[] 
     });
     return { ...section, items: visibleItems };
   }).filter((section) => section.items.length > 0);
+}
+
+/**
+ * Returns the matching nav item href for the current URL.
+ * Compares full href (path + hash) against current location.
+ */
+export function getActiveHref(): string {
+  if (typeof window === 'undefined') return '/dashboard';
+  const path = window.location.pathname;
+  const hash = window.location.hash.toLowerCase();
+  if (!hash || hash === '#') return path;
+  return path + hash;
 }

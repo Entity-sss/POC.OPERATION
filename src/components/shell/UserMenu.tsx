@@ -46,8 +46,8 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
           {user.fullName ? user.fullName.charAt(0).toUpperCase() : 'U'}
         </div>
         <div className="hidden md:flex flex-col text-left leading-tight">
-          <span className="text-xs font-semibold text-text-primary tracking-wide">{user.fullName}</span>
-          <span className="text-[10px] text-brand-primary font-mono">{user.employeeId}</span>
+          <span className="text-[13px] font-semibold text-text-primary tracking-wide">{user.fullName}</span>
+          <span className="text-xs text-brand-primary font-mono">{user.employeeId}</span>
         </div>
         <Icons.ChevronRight className={`w-3.5 h-3.5 text-text-tertiary transition-transform ${isOpen ? 'rotate-90' : ''}`} />
       </button>
@@ -55,13 +55,13 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
       {isOpen && (
         <div className="absolute right-0 mt-2 w-64 rounded-xl glass-panel border border-white/10 p-2 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-100">
           <div className="px-3 py-2 border-b border-border-subtle/80 mb-1">
-            <p className="text-xs font-semibold text-text-primary">{user.fullName}</p>
-            <p className="text-[11px] text-text-tertiary truncate">{user.email}</p>
+            <p className="text-sm font-semibold text-text-primary">{user.fullName}</p>
+            <p className="text-xs text-text-tertiary truncate">{user.email}</p>
             <div className="mt-1.5 flex items-center gap-1.5">
-              <span className="text-[9px] px-1.5 py-0.5 rounded bg-brand-primary/10 border border-brand-primary/20 text-brand-primary font-mono uppercase">
+              <span className="text-xs px-2 py-0.5 rounded bg-brand-primary/10 border border-brand-primary/20 text-brand-primary font-mono uppercase">
                 {primaryRole}
               </span>
-              <span className="text-[9px] text-status-success font-mono">ACTIVE</span>
+              <span className="text-xs text-status-success font-mono font-semibold">ACTIVE</span>
             </div>
           </div>
 
@@ -69,7 +69,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
             <button
               onClick={handleLogout}
               disabled={isLoggingOut}
-              className="w-full flex items-center gap-2.5 px-3 py-2 text-xs text-status-error hover:bg-status-error-bg rounded-lg transition-colors text-left"
+              className="w-full flex items-center gap-2.5 px-3 py-2 text-xs sm:text-[13px] text-status-error hover:bg-status-error-bg rounded-lg transition-colors text-left font-medium"
             >
               <Icons.LogOut className="w-4 h-4" />
               <span>{isLoggingOut ? 'Signing out...' : 'Sign Out'}</span>

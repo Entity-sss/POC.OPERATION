@@ -19,6 +19,20 @@ export const FormField: React.FC<FormFieldProps> = ({
   children,
   className = '',
 }) => {
+  const renderedChildren = React.isValidElement(children)
+    ? React.cloneElement(children as React.ReactElement<any>, {
+        id: (children as React.ReactElement<any>).props.id || id,
+        ...(error
+          ? {
+              'aria-invalid': true,
+              'aria-describedby': (children as React.ReactElement<any>).props['aria-describedby']
+                ? `${(children as React.ReactElement<any>).props['aria-describedby']} ${id}-error`
+                : `${id}-error`,
+            }
+          : {}),
+      })
+    : children;
+
   return (
     <div className={`space-y-1.5 ${className}`}>
       <div className="flex items-center justify-between">
@@ -27,14 +41,14 @@ export const FormField: React.FC<FormFieldProps> = ({
           {required && <span className="text-status-error ml-1">*</span>}
         </label>
         {hint && !error && (
-          <span className="text-[11px] text-text-tertiary">{hint}</span>
+          <span className="text-xs text-text-tertiary">{hint}</span>
         )}
       </div>
 
-      <div>{children}</div>
+      <div>{renderedChildren}</div>
 
       {error && (
-        <p id={`${id}-error`} className="text-xs text-status-error flex items-center gap-1 mt-1 animate-fadeIn">
+        <p id={`${id}-error`} className="text-xs text-status-error flex items-center gap-1 mt-1 animate-fadeIn" role="alert">
           <span>⚠</span>
           <span>{error}</span>
         </p>

@@ -7,7 +7,7 @@ describe('Global Navigation & Permission Filtering', () => {
     assert.ok(MAIN_NAVIGATION.length >= 2, 'Should have at least 2 sections');
     const titles = MAIN_NAVIGATION.map((s) => s.title);
     assert.ok(titles.includes('Core Operations'));
-    assert.ok(titles.includes('System & Governance'));
+    assert.ok(titles.includes('Administration'));
   });
 
   test('unprivileged user only sees items without required permissions', () => {
@@ -16,14 +16,13 @@ describe('Global Navigation & Permission Filtering', () => {
     const itemIds = allItems.map((i) => i.id);
 
     assert.ok(itemIds.includes('dashboard'), 'Dashboard should always be visible');
-    assert.ok(itemIds.includes('settings'), 'Settings should always be visible');
-    assert.equal(itemIds.includes('employees'), false, 'Workforce requires employee.view');
+    assert.equal(itemIds.includes('employees'), false, 'Workforce requires employee permission');
     assert.equal(itemIds.includes('registrations'), false, 'Registrations requires employee.approve_registration');
     assert.equal(itemIds.includes('roles'), false, 'Roles requires role.manage');
   });
 
-  test('user with employee.view permission sees workforce section', () => {
-    const visible = getFilteredNavigation(['employee.view']);
+  test('user with employee.read.company permission sees workforce section', () => {
+    const visible = getFilteredNavigation(['employee.read.company']);
     const itemIds = visible.flatMap((s) => s.items).map((i) => i.id);
 
     assert.ok(itemIds.includes('employees'));

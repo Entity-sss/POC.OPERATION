@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { PasswordInput } from '../ui/PasswordInput';
 import { Alert } from '../ui/Alert';
 import { LoadingSpinner } from '../ui/LoadingSpinner';
 import { Icons } from '../ui/Icons';
@@ -15,8 +14,6 @@ export const RegisterPage: React.FC = () => {
     permanentAddress: '',
     education: '',
     priorExperience: '',
-    password: '',
-    confirmPassword: '',
   });
 
   const [sameAsCurrent, setSameAsCurrent] = useState(false);
@@ -43,30 +40,9 @@ export const RegisterPage: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (e: React.SubmitEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMessage(null);
-
-    // Client-side validations
-    if (formData.password !== formData.confirmPassword) {
-      setErrorMessage('Passwords do not match. Please verify.');
-      return;
-    }
-
-    if (formData.password.length < 12) {
-      setErrorMessage('Password must be at least 12 characters long.');
-      return;
-    }
-
-    const hasUpper = /[A-Z]/.test(formData.password);
-    const hasLower = /[a-z]/.test(formData.password);
-    const hasDigit = /\d/.test(formData.password);
-    const hasSymbol = /[^A-Za-z0-9]/.test(formData.password);
-
-    if (!hasUpper || !hasLower || !hasDigit || !hasSymbol) {
-      setErrorMessage('Password must contain at least one uppercase, lowercase, number, and special character.');
-      return;
-    }
 
     setIsLoading(true);
 
@@ -80,7 +56,6 @@ export const RegisterPage: React.FC = () => {
         permanentAddress: formData.permanentAddress.trim(),
         education: formData.education.trim(),
         priorExperience: formData.priorExperience.trim(),
-        password: formData.password,
       });
 
       if (!result.success) {
@@ -118,14 +93,16 @@ export const RegisterPage: React.FC = () => {
             <div className="w-16 h-16 rounded-full bg-status-success-bg border border-status-success/30 flex items-center justify-center mx-auto text-status-success">
               <Icons.CheckCircle className="w-10 h-10" />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-3">
               <h2 className="text-2xl font-bold text-text-primary">Application Submitted Successfully</h2>
               <p className="text-sm text-text-secondary max-w-md mx-auto">
-                Your employee onboarding registration has been recorded under reference{' '}
-                <span className="font-mono text-brand-primary font-bold px-2 py-0.5 rounded bg-brand-primary/10 border border-brand-primary/20">
-                  {successId.slice(0, 8)}
-                </span>
-                . It will be reviewed by an authorized Administrator.
+                Your employee onboarding registration has been recorded in the database under reference ID:
+              </p>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-card border border-brand-primary/30 font-mono text-sm text-brand-primary font-bold shadow-gold-glow">
+                <span>{successId}</span>
+              </div>
+              <p className="text-xs text-text-tertiary max-w-md mx-auto">
+                An administrator will review your application, assign your role & department, and activate your Employee ID.
               </p>
             </div>
             <div className="pt-4">
@@ -133,7 +110,7 @@ export const RegisterPage: React.FC = () => {
                 href="/"
                 className="inline-flex items-center justify-center py-2.5 px-6 rounded-lg bg-brand-primary hover:bg-brand-primary-hover text-text-inverse font-semibold text-sm shadow-gold-glow transition-all"
               >
-                Return to Login
+                Return to Sign In
               </a>
             </div>
           </div>
@@ -324,37 +301,19 @@ export const RegisterPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Password Credentials */}
-              <div className="space-y-4 pt-2">
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-brand-primary flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-brand-primary"></span>
-                  Security Credentials
-                </h3>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <PasswordInput
-                    id="regPassword"
-                    name="password"
-                    label="Account Password *"
-                    value={formData.password}
-                    onChange={handleChange}
-                    placeholder="Min 12 characters"
-                    required
-                  />
-
-                  <PasswordInput
-                    id="regConfirmPassword"
-                    name="confirmPassword"
-                    label="Confirm Password *"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    placeholder="Re-enter password"
-                    required
-                  />
+              {/* Account Provisioning Notice */}
+              <div className="rounded-xl border border-brand-primary/20 bg-brand-primary/5 p-4 flex items-start gap-3">
+                <span className="p-1 rounded bg-brand-primary/10 text-brand-primary shrink-0 mt-0.5">
+                  <Icons.Shield className="w-4 h-4" />
+                </span>
+                <div className="space-y-1">
+                  <h4 className="text-xs font-semibold text-text-primary tracking-wide">
+                    Administrative Password Provisioning
+                  </h4>
+                  <p className="text-xs text-text-secondary leading-relaxed">
+                    Your initial password will be assigned by the administrator after your application is approved. You will receive your Employee ID and initial credentials through the enterprise onboarding protocol.
+                  </p>
                 </div>
-                <p className="text-[11px] text-text-tertiary">
-                  Password must be at least 12 characters and contain uppercase, lowercase, numeric digits, and special symbols.
-                </p>
               </div>
 
               {/* Submit Button */}

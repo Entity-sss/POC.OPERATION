@@ -1,163 +1,67 @@
 ---
 import AppLayout from '../layouts/AppLayout.astro';
-import { Icons } from '../components/ui/Icons';
-import { KPICard } from '../components/ui/KPICard';
-import { SlaBadge } from '../components/ui/SlaBadge';
-import { Badge } from '../components/ui/Badge';
+import { env } from 'cloudflare:workers';
+import { createDb } from '@/lib/db';
+import { employees, employeeRegistrationRequests, departments, roles } from '@/lib/db/schema';
+import { getPermissions, getPrincipal } from '@/lib/auth/service';
+import { count, eq } from 'drizzle-orm';
+import { DashboardShell } from '../components/dashboard/DashboardShell';
 
 export const prerender = false;
+
+// Authenticated session check
+const auth = Astro.locals.auth;
+if (!auth || !auth.isAuthenticated) {
+  return Astro.redirect('/');
+}
+
+const db = createDb(env.poc_operation_db);
+
+let principal: any = null;
+let permissions: string[] = [];
+
+try {
+  principal = await getPrincipal(db, auth);
+  const permSet = await getPermissions(db, principal.id);
+  permissions = Array.from(permSet);
+  Astro.locals.principal = principal;
+  Astro.locals.permissions = permissions;
+} catch (err) {
+  return Astro.redirect('/?reason=session-expired');
+}
+
+// Query live operational metrics concurrently from D1 database
+let activeWorkforceCount = 0;
+let pendingRegistrationsCount = 0;
+let departmentsCount = 0;
+let rolesCount = 0;
+
+try {
+  const [empRes, regRes, deptRes, rolesRes] = await Promise.all([
+    db.select({ value: count() }).from(employees).where(eq(employees.isActive, true)),
+    db.select({ value: count() }).from(employeeRegistrationRequests).where(eq(employeeRegistrationRequests.status, 'PENDING')),
+    db.select({ value: count() }).from(departments).where(eq(departments.isActive, true)),
+    db.select({ value: count() }).from(roles).where(eq(roles.isActive, true)),
+  ]);
+  activeWorkforceCount = empRes[0]?.value ?? 0;
+  pendingRegistrationsCount = regRes[0]?.value ?? 0;
+  departmentsCount = deptRes[0]?.value ?? 0;
+  rolesCount = rolesRes[0]?.value ?? 0;
+} catch (error) {
+  console.warn('Dashboard D1 query fallback:', error);
+}
 ---
 
 <AppLayout title="Dashboard | POC.OPERATION">
-  <div class="space-y-6">
-    {/* Page Header with Action Bar */}
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-border-subtle pb-5">
-      <div>
-        <div class="flex items-center gap-2 mb-1">
-          <Badge variant="gold" size="sm">Phase 4 Foundation</Badge>
-          <span class="text-xs text-text-tertiary font-mono">NODE: D1_PRIMARY</span>
-        </div>
-        <h1 class="text-2xl font-bold tracking-tight text-text-primary">
-          Operations Command Center
-        </h1>
-        <p class="text-xs text-text-secondary mt-1">
-          Real-time enterprise metrics, active personnel distribution, revenue pod rhythm, and infrastructure posture.
-        </p>
-      </div>
-
-      <div class="flex items-center gap-3">
-        <SlaBadge status="ON_TRACK" score={99.8} label="Telemetry Uptime" />
-      </div>
-    </div>
-
-    {/* Metric Cards Grid using KPICard UI components */}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <KPICard
-        client:load
-        title="Active Workforce"
-        value="1,248"
-        trend={{ value: "4.2%", direction: "up", label: "vs previous month" }}
-        icon={<Icons.Users className="w-5 h-5" />}
-      />
-
-      <KPICard
-        client:load
-        title="Revenue Pod Run-Rate"
-        value="₹2.25 Cr"
-        progress={{ current: 1.48, target: 2.25, label: "Existing Client Pod Target" }}
-        variant="gold"
-        icon={<Icons.IndianRupee className="w-5 h-5" />}
-      />
-
-      <KPICard
-        client:load
-        title="Pending Registrations"
-        value="14"
-        trend={{ value: "3 critical", direction: "down", label: "requires review" }}
-        variant="warning"
-        icon={<Icons.FileCheck className="w-5 h-5" />}
-      />
-
-      <KPICard
-        client:load
-        title="SLA Posture"
-        value="COMPLIANT"
-        subtitle="Zero open critical CVE vulnerabilities"
-        variant="success"
-        icon={<Icons.Shield className="w-5 h-5" />}
-      />
-    </div>
-
-    {/* Connected Revenue Chain & Daily Rhythm Status */}
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      {/* Revenue Chain Progress */}
-      <div class="lg:col-span-8 glass-panel p-6 rounded-2xl border border-white/10 space-y-4">
-        <div class="flex items-center justify-between border-b border-border-subtle/80 pb-3">
-          <div>
-            <h2 class="text-sm font-bold uppercase tracking-wider font-mono text-text-primary">
-              Consolidated Revenue Chain
-            </h2>
-            <p class="text-xs text-text-secondary mt-0.5">
-              Live progression from Activity to Realized Profit across ₹4 Cr target
-            </p>
-          </div>
-          <Badge variant="gold" size="sm">Rhythm: Outreach</Badge>
-        </div>
-
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
-          <div class="p-3.5 rounded-xl bg-surface-card border border-border-subtle space-y-1">
-            <span class="text-[10px] font-mono uppercase text-text-tertiary">1. Activity (Calls/Mtgs)</span>
-            <div class="text-lg font-bold font-mono text-text-primary">142</div>
-            <span class="text-[10px] text-status-success">↑ 18 this week</span>
-          </div>
-          <div class="p-3.5 rounded-xl bg-surface-card border border-border-subtle space-y-1">
-            <span class="text-[10px] font-mono uppercase text-text-tertiary">2. Deals / Pipeline</span>
-            <div class="text-lg font-bold font-mono text-brand-primary">₹3.85 Cr</div>
-            <span class="text-[10px] text-text-secondary">24 active opps</span>
-          </div>
-          <div class="p-3.5 rounded-xl bg-surface-card border border-border-subtle space-y-1">
-            <span class="text-[10px] font-mono uppercase text-text-tertiary">3. Projects In Execution</span>
-            <div class="text-lg font-bold font-mono text-text-primary">16</div>
-            <span class="text-[10px] text-status-success">100% on schedule</span>
-          </div>
-          <div class="p-3.5 rounded-xl bg-surface-card border border-border-subtle space-y-1">
-            <span class="text-[10px] font-mono uppercase text-text-tertiary">4. Realized Collections</span>
-            <div class="text-lg font-bold font-mono text-status-success">₹1.92 Cr</div>
-            <span class="text-[10px] text-text-secondary">48% of annual goal</span>
-          </div>
-        </div>
-
-        {/* Linear Funnel Visual Bar */}
-        <div class="pt-2">
-          <div class="flex justify-between text-[11px] font-mono text-text-tertiary mb-1.5">
-            <span>Pipeline Progression: Activity → Opportunities → Conversion → Invoiced → Collected</span>
-            <span class="text-brand-primary font-bold">48% to Goal</span>
-          </div>
-          <div class="w-full bg-surface-base h-2.5 rounded-full overflow-hidden flex border border-border-subtle">
-            <div class="bg-status-success h-full" style="width: 48%" title="Collected: 48%"></div>
-            <div class="bg-brand-primary h-full opacity-80" style="width: 24%" title="Invoiced: 24%"></div>
-            <div class="bg-brand-secondary h-full opacity-60" style="width: 18%" title="In Project Execution: 18%"></div>
-            <div class="bg-surface-subtle h-full" style="width: 10%" title="Uncommitted Pipeline: 10%"></div>
-          </div>
-        </div>
-      </div>
-
-      {/* SLA & Governance Summary */}
-      <div class="lg:col-span-4 glass-panel p-6 rounded-2xl border border-white/10 space-y-4 flex flex-col justify-between">
-        <div class="space-y-3">
-          <div class="flex items-center justify-between border-b border-border-subtle/80 pb-3">
-            <h2 class="text-sm font-bold uppercase tracking-wider font-mono text-text-primary">
-              Governance & SLA
-            </h2>
-            <SlaBadge status="WATCH" />
-          </div>
-
-          <div class="space-y-2.5">
-            <div class="flex items-center justify-between text-xs p-2 rounded-lg bg-surface-card border border-border-subtle">
-              <span class="text-text-secondary">Daily Reports Submitted</span>
-              <span class="font-mono font-bold text-text-primary">88 / 92</span>
-            </div>
-            <div class="flex items-center justify-between text-xs p-2 rounded-lg bg-surface-card border border-border-subtle">
-              <span class="text-text-secondary">Maker-Checker Pending</span>
-              <span class="font-mono font-bold text-status-warning">6 tasks</span>
-            </div>
-            <div class="flex items-center justify-between text-xs p-2 rounded-lg bg-surface-card border border-border-subtle">
-              <span class="text-text-secondary">Active Delay Requests</span>
-              <span class="font-mono font-bold text-text-primary">2 pending</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="pt-2 border-t border-border-subtle/60 text-center">
-          <a
-            href="/dashboard#tasks"
-            class="text-xs text-brand-primary hover:text-brand-primary-hover font-semibold inline-flex items-center gap-1.5 transition-colors"
-          >
-            <span>Inspect Task Workbench</span>
-            <Icons.ChevronRight className="w-3.5 h-3.5" />
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
+  <DashboardShell
+    client:load
+    user={principal}
+    permissions={permissions}
+    initialCounts={{
+      activeWorkforce: activeWorkforceCount,
+      pendingRegistrations: pendingRegistrationsCount,
+      departments: departmentsCount,
+      roles: rolesCount,
+    }}
+  />
 </AppLayout>

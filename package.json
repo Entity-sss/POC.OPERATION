@@ -10,11 +10,13 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "test": "node --import tsx --test \"src/**/*.test.ts\"",
     "typecheck": "astro check",
     "generate-types": "wrangler types",
     "db:generate": "drizzle-kit generate",
     "db:migrate:local": "wrangler d1 migrations apply poc-operation-db --local",
-    "db:migrate:remote": "wrangler d1 migrations apply poc-operation-db --remote"
+    "db:migrate:remote": "wrangler d1 migrations apply poc-operation-db --remote",
+    "provision:first-admin:remote": "wrangler dev -c wrangler.first-admin.jsonc --remote --port 8787"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.3.1",

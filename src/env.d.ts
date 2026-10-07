@@ -9,5 +9,7 @@ interface Env {
 declare namespace App {
   interface Locals {
     auth: import('./lib/auth').AuthContext;
+    principal?: import('./lib/auth/service').AuthenticatedPrincipal;
+    permissions?: string[];
   }
 }

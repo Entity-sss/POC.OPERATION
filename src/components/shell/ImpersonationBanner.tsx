@@ -27,7 +27,7 @@ export const ImpersonationBanner: React.FC<ImpersonationBannerProps> = ({
 
       <button
         onClick={onExit || (() => { window.location.href = '/api/auth/exit-impersonation'; })}
-        className="px-2.5 py-1 rounded bg-amber-500 hover:bg-amber-400 text-surface-base font-bold text-[11px] uppercase tracking-wider font-mono shadow-sm transition-colors"
+        className="px-3 py-1.5 rounded bg-amber-500 hover:bg-amber-400 text-surface-base font-bold text-xs uppercase tracking-wider font-mono shadow-sm transition-colors"
       >
         Exit Impersonation
       </button>

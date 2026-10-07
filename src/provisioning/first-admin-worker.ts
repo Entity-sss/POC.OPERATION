@@ -1,6 +1,6 @@
 import { createDb } from '@/lib/db';
 import { AuthError, provisionFirstAdmin, secretMatches } from '@/lib/auth/service';
-import { registrationSchema } from '@/lib/auth/validation';
+import { firstAdminSchema } from '@/lib/auth/validation';
 
 export interface ProvisioningEnv {
   poc_operation_db: D1Database;
@@ -31,7 +31,7 @@ export default {
         return Response.json({ success: false, error: 'INVALID_JSON' }, { status: 400 });
       }
 
-      const input = registrationSchema.parse(rawBody);
+      const input = firstAdminSchema.parse(rawBody);
       const result = await provisionFirstAdmin(createDb(env.poc_operation_db), token, expectedToken, input);
       return Response.json({ success: true, employeeId: result.employeeId }, { status: 201 });
     } catch (error) {

@@ -21,7 +21,7 @@ export const AppShell: React.FC<AppShellProps> = ({ user, permissions, children 
 
   return (
     <div className="flex h-screen w-full bg-surface-base overflow-hidden">
-      {/* Desktop Sidebar */}
+      {/* Desktop Sidebar — dark shell */}
       <Sidebar
         permissions={permissions}
         isCollapsed={isSidebarCollapsed}
@@ -35,12 +35,18 @@ export const AppShell: React.FC<AppShellProps> = ({ user, permissions, children 
         permissions={permissions}
       />
 
-      {/* Main Content Area */}
+      {/* Main Content Area — light workspace */}
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+        {/* TopBar sits on top */}
         <TopBar user={user} onOpenMobileNav={() => setIsMobileNavOpen(true)} />
 
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
-          <div className="max-w-7xl mx-auto">
+        {/* Scrollable workspace content: white/light background */}
+        <main
+          className="flex-1 overflow-y-auto bg-content-bg"
+          id="main-content"
+        >
+          {/* Page-level padding and max width constraint */}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             {children}
           </div>
         </main>

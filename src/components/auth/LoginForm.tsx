@@ -30,7 +30,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ initialReason }) => {
     }
   }, []);
 
-  const handleSubmit = async (e: React.SubmitEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrorMessage(null);
     setSessionExpiredNotice(null);
@@ -138,8 +138,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ initialReason }) => {
 
         {/* Remember Me & Forgot Password Row */}
         <div className="flex items-center justify-between text-xs pt-1">
-          <label className="flex items-center gap-2 cursor-pointer select-none text-text-secondary hover:text-text-primary transition-colors">
+          <label htmlFor="rememberMe" className="flex items-center gap-2 cursor-pointer select-none text-text-secondary hover:text-text-primary transition-colors">
             <input
+              id="rememberMe"
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}

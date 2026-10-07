@@ -83,12 +83,12 @@ export const KPICard: React.FC<KPICardProps> = ({
         )}
 
         {subtitle && !trend && (
-          <p className="text-xs text-text-secondary mt-1">{subtitle}</p>
+          <p className="text-xs text-text-secondary mt-1 font-detail">{subtitle}</p>
         )}
 
         {progressPercent !== null && (
           <div className="mt-3.5 space-y-1.5">
-            <div className="flex justify-between text-[11px] font-mono">
+            <div className="flex justify-between text-xs font-mono">
               <span className="text-text-tertiary">{progress?.label || 'Target Completion'}</span>
               <span className="font-semibold text-brand-primary">{progressPercent}%</span>
             </div>

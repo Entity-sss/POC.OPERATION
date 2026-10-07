@@ -8,6 +8,20 @@
       "when": 1789132672483,
       "tag": "0000_early_white_tiger",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1789457481578,
+      "tag": "0001_complex_mad_thinker",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1789516330559,
+      "tag": "0002_groovy_umar",
+      "breakpoints": true
     }
   ]
 }

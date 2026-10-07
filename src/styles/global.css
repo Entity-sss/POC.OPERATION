@@ -1,55 +1,75 @@
 @import "tailwindcss";
 
 @theme {
-  /* Surface colors */
+  /* ── Dark Shell Surfaces (Sidebar, TopBar) ─────────────────────────────── */
   --color-surface-base: #0B1120;
   --color-surface-card: #111C33;
   --color-surface-hover: #162444;
   --color-surface-active: #1C2E56;
+  --color-surface-elevated: #1E293B;
   --color-surface-subtle: #1E293B;
 
-  /* Brand / Accent colors */
-  --color-brand-primary: #D4AF37;
-  --color-brand-primary-hover: #C5A028;
-  --color-brand-secondary: #2B6CB0;
-  --color-brand-gold-glow: rgba(212, 175, 55, 0.25);
-  --color-brand-gold-muted: #A38426;
+  /* ── Light Content Area Surfaces ──────────────────────────────────────── */
+  --color-content-bg: #FFFFFF;
+  --color-content-surface: #F8FAFC;
+  --color-content-elevated: #F1F5F9;
+  --color-content-border: #E2E8F0;
+  --color-content-border-subtle: #F1F5F9;
+  --color-content-text: #0F172A;
+  --color-content-text-secondary: #475569;
+  --color-content-text-tertiary: #94A3B8;
 
-  /* Typography / Text colors */
+  /* ── Brand / Accent ────────────────────────────────────────────────────── */
+  --color-brand-primary: #B8962E;
+  --color-brand-primary-hover: #9D7D22;
+  --color-brand-secondary: #2B6CB0;
+  --color-brand-gold-glow: rgba(184, 150, 46, 0.2);
+  --color-brand-gold-muted: #9D7D22;
+  /* Light-mode brand accent for content */
+  --color-brand-accent: #1E3A5F;
+
+  /* ── Typography (dark shell) ───────────────────────────────────────────── */
   --color-text-primary: #F8FAFC;
   --color-text-secondary: #94A3B8;
   --color-text-tertiary: #64748B;
   --color-text-inverse: #0B1120;
 
-  /* Borders */
+  /* ── Borders (dark shell) ──────────────────────────────────────────────── */
   --color-border-subtle: #1E293B;
   --color-border-default: #334155;
-  --color-border-focus: #D4AF37;
-  --color-border-gold: rgba(212, 175, 55, 0.4);
+  --color-border-focus: #B8962E;
+  --color-border-gold: rgba(184, 150, 46, 0.4);
 
-  /* Status feedback colors */
+  /* ── Status Semantics ──────────────────────────────────────────────────── */
   --color-status-success: #10B981;
-  --color-status-success-bg: rgba(16, 185, 129, 0.12);
-  --color-status-warning: #F59E0B;
-  --color-status-warning-bg: rgba(245, 158, 11, 0.12);
-  --color-status-error: #EF4444;
-  --color-status-error-bg: rgba(239, 68, 68, 0.12);
-  --color-status-info: #38BDF8;
-  --color-status-info-bg: rgba(56, 189, 248, 0.12);
+  --color-status-success-bg: rgba(16, 185, 129, 0.10);
+  --color-status-warning: #D97706;
+  --color-status-warning-bg: rgba(217, 119, 6, 0.10);
+  --color-status-error: #DC2626;
+  --color-status-error-bg: rgba(220, 38, 38, 0.08);
+  --color-status-info: #2563EB;
+  --color-status-info-bg: rgba(37, 99, 235, 0.08);
 
-  /* Elevation Shadows */
-  --shadow-elevation-1: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-elevation-2: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
-  --shadow-elevation-3: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -4px rgba(0, 0, 0, 0.5);
-  --shadow-gold-glow: 0 0 20px rgba(212, 175, 55, 0.2);
-  --shadow-gold-glow-lg: 0 0 35px rgba(212, 175, 55, 0.3);
+  /* ── Elevation Shadows ─────────────────────────────────────────────────── */
+  --shadow-elevation-1: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-elevation-2: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-elevation-3: 0 10px 15px -3px rgba(0, 0, 0, 0.10), 0 4px 6px -4px rgba(0, 0, 0, 0.06);
+  --shadow-gold-glow: 0 0 16px rgba(184, 150, 46, 0.15);
+  --shadow-gold-glow-lg: 0 0 28px rgba(184, 150, 46, 0.20);
+  /* Light card shadow */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
+/* ────────────────────────────────────────────────────────────────────────── */
 :root {
-  color-scheme: dark;
+  color-scheme: light dark;
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-detail: 'Cambria', 'Georgia', 'Times New Roman', serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', ui-monospace, monospace;
 }
 
+/* Shell chrome (sidebar, topbar) uses dark theme */
 body {
   background-color: var(--color-surface-base);
   color: var(--color-text-primary);
@@ -60,13 +80,163 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Glass panel styles */
+/* ── Main Content Area: White/Light ─────────────────────────────────────── */
+.workspace-content {
+  background-color: var(--color-content-bg);
+  color: var(--color-content-text);
+  min-height: 100%;
+}
+
+/* ── Typography ─────────────────────────────────────────────────────────── */
+.font-detail {
+  font-family: var(--font-detail);
+}
+
+.text-detail {
+  font-family: var(--font-detail);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ── Operational Table — Light Mode ─────────────────────────────────────── */
+.operational-table {
+  font-family: var(--font-detail);
+  font-size: 12px;
+  line-height: 1.5;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.operational-table th {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-content-text-secondary);
+  background-color: var(--color-content-surface);
+  padding: 11px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-content-border);
+  white-space: nowrap;
+}
+
+.operational-table td {
+  font-family: var(--font-detail);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-content-text);
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--color-content-border-subtle);
+  vertical-align: middle;
+}
+
+.operational-table tr:last-child td {
+  border-bottom: none;
+}
+
+.operational-table tr:hover td {
+  background-color: var(--color-content-surface);
+}
+
+/* ── Content Cards ──────────────────────────────────────────────────────── */
+.content-card {
+  background-color: var(--color-content-bg);
+  border: 1px solid var(--color-content-border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+}
+
+.content-card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--color-content-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ── KPI Card ───────────────────────────────────────────────────────────── */
+.kpi-card {
+  background-color: var(--color-content-bg);
+  border: 1px solid var(--color-content-border);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 150ms ease, border-color 150ms ease;
+}
+
+.kpi-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  border-color: #CBD5E1;
+}
+
+/* ── Status Badges (light-mode) ─────────────────────────────────────────── */
+.badge-success {
+  background-color: #DCFCE7;
+  color: #166534;
+  border: 1px solid #BBF7D0;
+}
+
+.badge-warning {
+  background-color: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+}
+
+.badge-error {
+  background-color: #FEE2E2;
+  color: #991B1B;
+  border: 1px solid #FECACA;
+}
+
+.badge-info {
+  background-color: #DBEAFE;
+  color: #1E40AF;
+  border: 1px solid #BFDBFE;
+}
+
+.badge-neutral {
+  background-color: #F1F5F9;
+  color: #475569;
+  border: 1px solid #E2E8F0;
+}
+
+/* ── Workspace Transition ───────────────────────────────────────────────── */
+.workspace-enter {
+  animation: workspaceEnter 180ms ease-out;
+}
+
+@keyframes workspaceEnter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Skeleton Loading ───────────────────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, #F1F5F9 25%, #E2E8F0 50%, #F1F5F9 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+  border-radius: 6px;
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Shell Glasspanel (dark surfaces only) ──────────────────────────────── */
 .glass-panel {
   background: rgba(17, 28, 51, 0.75);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 1px 1px rgba(212, 175, 55, 0.1);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 1px 1px rgba(184, 150, 46, 0.08);
 }
 
 .glass-panel-subtle {
@@ -76,18 +246,24 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Scrollbar customization */
+/* ── Scrollbar ──────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0B1120;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1E293B;
+  background: #CBD5E1;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #94A3B8;
+}
+
+/* ── Focus Ring ─────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
 }

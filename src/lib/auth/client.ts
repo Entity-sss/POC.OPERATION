@@ -19,7 +19,7 @@ export interface ApiErrorResponse {
   };
 }
 
-export async function loginUser(employeeId: string, password: string):Promise<{ success: true; user: AuthMeResponse['user'] } | { success: false; error: string; code?: string }> {
+export async function loginUser(employeeId: string, password: string): Promise<{ success: true; user: AuthMeResponse['user'] } | { success: false; error: string; code?: string }> {
   try {
     const res = await fetch('/api/auth/login', {
       method: 'POST',
@@ -37,7 +37,8 @@ export async function loginUser(employeeId: string, password: string):Promise<{ 
       return { success: false, error: message, code: errData?.error?.code };
     }
 
-    return { success: true, user: data.user };
+    const payload = data?.data ?? data;
+    return { success: true, user: payload.user };
   } catch (err: any) {
     return { success: false, error: err.message || 'An unexpected network error occurred.' };
   }
@@ -61,7 +62,8 @@ export async function getAuthMe(): Promise<AuthMeResponse | null> {
   try {
     const res = await fetch('/api/auth/me');
     if (!res.ok) return null;
-    return await res.json();
+    const json: any = await res.json();
+    return (json?.data ?? json) as AuthMeResponse;
   } catch {
     return null;
   }
@@ -76,7 +78,6 @@ export interface RegisterInput {
   permanentAddress: string;
   education: string;
   priorExperience: string;
-  password: string;
 }
 
 export async function registerUser(input: RegisterInput): Promise<{ success: true; id: string } | { success: false; error: string }> {
@@ -96,7 +97,13 @@ export async function registerUser(input: RegisterInput): Promise<{ success: tru
       return { success: false, error: errData?.error?.message || 'Registration failed.' };
     }
 
-    return { success: true, id: data.registrationRequestId };
+    const payload = data?.data ?? data;
+    const id = payload.registrationRequestId || payload.id;
+    if (!id) {
+      return { success: false, error: 'Server did not return a registration reference ID.' };
+    }
+
+    return { success: true, id };
   } catch (err: any) {
     return { success: false, error: err.message || 'An unexpected network error occurred.' };
   }
